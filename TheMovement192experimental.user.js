@@ -86,6 +86,7 @@
 				}
 			});
 
+            // Entrypoint Abstract
 			qx.Class.define('TheMovement.Entrypoint.Abstract', {
 				type: 'abstract',
 				extend: Object,
@@ -136,13 +137,17 @@
 					}
 				}
 			});
-           // Entrypoint
+
+           // Entrypoint RegionMenu
 			qx.Class.define('TheMovement.Entrypoint.RegionMenu', {
 				extend: TheMovement.Entrypoint.Abstract,
 				construct: function(history) {
 					TheMovement.Entrypoint.Abstract.call(this, history);
-
-					this.selectedObjectMemberName = webfrontend.gui.region.RegionCityMenu.prototype.onTick.toString()
+                    // Working 19.2
+                    //this.selectedObjectMemberName = webfrontend.gui.region.RegionCityMenu.prototype.onTick.toString()
+                    //     .match(/if\(this\.([A-Za-z0-9_]+)!==null\)this\.[A-Za-z0-9_]+\(\);/)[1];
+					// Working 19.2: Trying to edit for 19.3
+                    this.selectedObjectMemberName = webfrontend.gui.region.RegionCityMenu.prototype.onTick.toString()
 						.match(/([A-Za-z0-9_]+)!==null\)this\.[A-Za-z0-9_]+\(\);/)[1];
                     console.log("TheMovement: ", this.selectedObjectMemberName); //__Qz 19.2 || ?? 19.3
 
@@ -294,10 +299,18 @@
 					}
 				}
 			});
+
             //Hash
             qx.Class.define('TheMovement.Hash', {
 				extend: Object,
 				construct: function() {
+                    // Original 19.2
+                    //var matches = ClientLib.Data.AllianceSupportState.prototype.Update.toString()
+                    //     .match(/switch \(\$I\.([A-Z]{6})\.([A-Z]{6})\([a-z]\.c\[[a-z]\]\.charCodeAt\(0\)\)\)\{/);
+                    // Works 19.2 not 19.3
+                    //var matches = ClientLib.Data.AllianceSupportState.prototype.Update.toString()
+                    //     .match(/switch.*\(\$I\.([A-Z]{6})\.([A-Z]{6})\([a-z]\.c\[[a-z]\]\.charCodeAt\(0\)\)\)\{/);
+                    // Working 19.2 edit for 19.3
 					var matches = ClientLib.Data.AllianceSupportState.prototype.Update.toString()
 						.match(/.*\(\$I\.([A-Z]{6})\.([A-Z]{6})\([a-z]\.c\[[a-z]\]\.charCodeAt\(0\)\)\)\{/);
 					var hashEncoderClassname = matches[1];
@@ -859,23 +872,32 @@
 					this.visObjectTypeNameMap[ClientLib.Vis.VisObject.EObjectType.RegionNPCBase] = ClientLib.Vis.Region.RegionNPCBase.prototype.get_BaseLevel.toString().match(/return this\.([A-Z]{6})\.[A-Z]{6};/)[1];
 
 					this.territoryRadiusMemberNameMap = {};
-					this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.WorldObjectCity.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\([a-z]>>0x\d+\)&15\);/)[1];
-					this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase] = ClientLib.Data.WorldSector.WorldObjectNPCBase.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\([a-z]>>0x12\)&15\);/)[1];
-					this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.WorldObjectRuin.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\(g>>9\)&15\);/)[1];
-                   // console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City]); // SZCBUY 19.2
-                   // console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase]); // SLYVIK
-                    //console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin]); //EWWPKY
+				    this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.WorldObjectCity.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\([a-z]>>0x/)[1];
+                    this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase] = ClientLib.Data.WorldSector.WorldObjectNPCBase.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\([a-z]>>0x12/)[1];
+                    this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.WorldObjectRuin.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\(g>>9/)[1];
+                    //SOMEHOW FINDS RETURNS IN 19.3
+                    //this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.WorldObjectCity.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\([a-z]>>/)[1];
+                    //this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase] = ClientLib.Data.WorldSector.WorldObjectNPCBase.prototype.$ctor.toString().match(/this\.([A-Z]{6})=/)[1];
+                    //this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.WorldObjectRuin.prototype.$ctor.toString().match(/this\.([A-Z]{6})=\(\(g>>9/)[1];
+                    console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City]); // SZCBUY 19.2
+                    console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase]); // SLYVIK
+                    console.log("TheMovement: ", this.territoryRadiusMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin]); //EWWPKY
 
-					this.baseLevelMemberNameMap = {};
-					this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Vis.Region.RegionCity.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
-					this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase] = ClientLib.Vis.Region.RegionNPCBase.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
-					this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Vis.Region.RegionRuin.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
 
-					this.playerDataIndexMemberNameMap = {};
-					this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/case \$I\.[A-Z]{6}\.City:{.+?var ([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\];if\(\1==null\){return false;}/)[2];
-					this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/case \$I\.[A-Z]{6}\.Ruin:{.+?var ([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\];if\(\1==null\){return false;}/)[2];
-                   // console.log("TheMovement: ", this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City]); //GTJISU
-                    //console.log("TheMovement: ", this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin]);//XARTHQ
+                    this.baseLevelMemberNameMap = {};
+                    this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Vis.Region.RegionCity.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
+                    this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.NPCBase] = ClientLib.Vis.Region.RegionNPCBase.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
+                    this.baseLevelMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Vis.Region.RegionRuin.prototype.get_BaseLevel.toString().match(/return this\.[A-Z]{6}\.([A-Z]{6});/)[1];
+
+                    this.playerDataIndexMemberNameMap = {};
+                    //Original 19.2
+                    this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/.City:{.+?var.?([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\];if\(\1==null\){return.*false;}/)[2];
+                    this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/.Ruin:{.+?var.*([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\];if\(\1==null\){return.*false;}/)[2];
+                    //19.2 edit Works || Not working in 19.3
+                    //this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/.City:{.+?var.?([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\]/)[2];
+                    //this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin] = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/.Ruin:{.+?var.*([A-Za-z]+)=this\.[A-Z]{6}\.d\[[A-Za-z]+\.([A-Z]{6})\]/)[2];
+                    console.log("TheMovement: ", this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.City]); //GTJISU
+                    console.log("TheMovement: ", this.playerDataIndexMemberNameMap[ClientLib.Data.WorldSector.ObjectType.Ruin]);//XARTHQ
 				},
 				members: {
 					visObjectTypeNameMap: null,
