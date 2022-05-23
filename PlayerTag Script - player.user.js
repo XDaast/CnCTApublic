@@ -207,7 +207,7 @@
                             }
              });
 
-            // Mise à jour automatique
+            // Mise Ã  jour automatique
             window.setInterval(function(){
                 updateFromServer();
             }, 300000);
