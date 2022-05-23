@@ -3,7 +3,8 @@
 // @namespace   http*://cncapp*.alliances.commandandconquer.com/*/index.aspx*
 // @description Allow to set tags for players
 // @include     http*://cncapp*.alliances.commandandconquer.com/*/index.aspx*
-// @version     2.15
+// @version     2.16
+// @contributer XDaast 22.2 fix
 // @author      Alkalyne
 // ==/UserScript==
 /*global PerforceChangelist,window,localStorage, console, ClientLib, MaelstromTools*/
@@ -67,13 +68,13 @@
                 .match(/if\(this\.([A-Za-z0-9_]+)!==null\){this\.[A-Za-z0-9_]+\(\);}/);
 
             // attackButtonPatch script Fix
-            if (matchList == undefined) {
+           /* if (matchList == undefined) {
                 matchList = webfrontend.gui.region.RegionCityMenu.prototype.onTickAttPatch.toString()
                     .match(/if\(this\.([A-Za-z0-9_]+)!==null\){this\.[A-Za-z0-9_]+\(\);}/);
             }
             selectedObjectMemberName = matchList[1];
             worldSectorVersionMemberName = ClientLib.Data.WorldSector.prototype.get_Version.toString()
-                .match(/return this\.([A-Z]{6});/)[1];
+                .match(/return this\.([A-Z]{6});/)[1];*/
 
             var tagButton = {
                 selectedBase: null,
