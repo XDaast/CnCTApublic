@@ -4,6 +4,7 @@
 // @description Allow to set tags for players
 // @include     http*://cncapp*.alliances.commandandconquer.com/*/index.aspx*
 // @version     2.16
+// @contributer XDaast 22.2 fix?
 // @author      Alkalyne
 // ==/UserScript==
 /*global PerforceChangelist,window,localStorage, console, ClientLib, MaelstromTools*/
@@ -59,7 +60,7 @@
             visObjectTypeNameMap[ClientLib.Vis.VisObject.EObjectType.RegionNPCBase] = ClientLib.Vis.Region.RegionNPCBase.prototype.get_BaseLevel.toString().match(/return this\.([A-Z]{6})\.[A-Z]{6};/)[1];
             worldSectorObjectsMemberName = ClientLib.Data.WorldSector.prototype.SetDetails.toString().match(/case \$I\.[A-Z]{6}\.City:.+?this\.([A-Z]{6})\.[A-Z]{6}\(\(\(e<<(?:16|0x10)\)\|d\),g\);.+?var h=this\.([A-Z]{6})\.d\[g\.[A-Z]{6}\];if\(h==null\){return false;}var i=\(\(h\.([A-Z]{6})!=0\)\s?\?\s?this\.([A-Z]{6})\.d\[h\.\3\]\s?:\s?null\);/)[1];
             updateData$ctorMethodName = ClientLib.Vis.MouseTool.CreateUnitTool.prototype.Activate.toString()
-						.match(/\$I\.[A-Z]{6}\.[A-Z]{6}\(\)\.[A-Z]{6}\(\)\.[A-Z]{6}\(\)\.[A-Z]{6}\(\(new \$I\.[A-Z]{6}\)\.([A-Z]{6})\(this,this\.[A-Z]{6}\)\);/)[1];
+						.match(/\$I\.[A-Z]{6}\.[A-Z]{6}\(\)\.[A-Z]{6}\(\)\.[A-Z]{6}\(\)\.[A-Z]{6}\(\(new \$I\.[A-Z]{6}\)\.([A-Z]{6})\(this,this\.[A-Z]{6}\)\);/)[0];
 
             regionUpdateMethodName = ClientLib.Vis.Region.Region.prototype.SetPosition.toString()
 						.match(/this\.([A-Z]{6})\(\);/)[1];
@@ -67,13 +68,13 @@
 						.match(/if\(this\.([A-Za-z0-9_]+)!==null\){this\.[A-Za-z0-9_]+\(\);}/);
 
 			// attackButtonPatch script Fix
-			if (matchList == undefined ) {
+			/*if (matchList == undefined ) {
 				matchList = webfrontend.gui.region.RegionCityMenu.prototype.onTickAttPatch.toString()
 					.match(/if\(this\.([A-Za-z0-9_]+)!==null\){this\.[A-Za-z0-9_]+\(\);}/);
 			}
 			selectedObjectMemberName = matchList[1];
             worldSectorVersionMemberName = ClientLib.Data.WorldSector.prototype.get_Version.toString()
-            .match(/return this\.([A-Z]{6});/)[1];
+            .match(/return this\.([A-Z]{6});/)[1];*/
 
             var tagButton = {
               selectedBase: null,
